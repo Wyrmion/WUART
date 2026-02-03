@@ -311,7 +311,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   __auto_type indx = -1;
     UART_IRQ_SWICH((uint32_t)(huart->Instance),indx);
   #else
-  __auto_type indx = _this_get_tim_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
+  __auto_type indx = _this_get_uart_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
   #endif
 
   if(indx < 0)  
@@ -345,7 +345,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   __auto_type indx = -1;
     UART_IRQ_SWICH((uint32_t)(ST_UART_CAST(huart)->Instance),indx);
   #else
-  __auto_type indx = _this_get_tim_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
+  __auto_type indx = _this_get_uart_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
   #endif
 
   if(indx < 0)  
@@ -378,7 +378,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart)
   __auto_type indx = -1;
     UART_IRQ_SWICH((uint32_t)(ST_UART_CAST(huart)->Instance),indx);
   #else
-  __auto_type indx = _this_get_tim_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
+  __auto_type indx = _this_get_uart_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
   #endif
 
   if(indx < 0)  
@@ -411,7 +411,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef* huart)
   __auto_type indx = -1;
     UART_IRQ_SWICH((uint32_t)(ST_UART_CAST(huart)->Instance),indx);
   #else
-  __auto_type indx = _this_get_tim_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
+  __auto_type indx = _this_get_uart_indx((uint32_t)(ST_UART_CAST(huart)->Instance));
   #endif
 
   if(indx < 0)  

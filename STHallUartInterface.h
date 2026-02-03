@@ -31,12 +31,12 @@ extern "C"{
 /* Private macro -------------------------------------------------------------*/
 #define ST_UART1
 //#define ST_UART2
-#define ST_UART3
+//#define ST_UART3
 //#define ST_UART4
 //#define ST_UART5
 //#define ST_UART6
 //#define ST_UART7
-#define ST_UART8
+//#define ST_UART8
 //#define ST_UART9
 //#define ST_UART10
 /* Private typedef -----------------------------------------------------------*/

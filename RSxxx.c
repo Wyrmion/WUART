@@ -3,8 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.0
- * @date    15 Feb. 2025
+ * @version V1.2.1
+ * @date   	03 Feb. 2026
  * @todo    Move all platform depending code to @ref sUartInterface_Handle_t
  *************************************************************************
  */
@@ -109,9 +109,9 @@ static HwInterface_vtable_t vtable = {
     #endif
 
     cthis->hwinter = hwinter;
-
+    #ifdef WINTERFACE_USE_INTERFACE_PARENT_LIB
     cthis->parent.vtable = &vtable;
-    
+    #endif
     cthis->InternalSize = cfg->src_dst_size;
 
     cthis->RxBuffInternal = cfg->dst;

@@ -3,8 +3,8 @@
   * @file     RSxxxInterfacePrivate.h
   * @author   Wyrm
   * @brief    Header file for RSxxx Interface abstract class
-  * @version  V1.0.0
-  * @date     12 Nov. 2024
+  * @version  V1.0.1
+  * @date     03 Feb. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -13,7 +13,7 @@
 
 
 
-#include "cmsis_os2.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -23,7 +23,7 @@ extern "C"{
 #include <stddef.h>
 
 #ifdef W_USE_RTOS
-  #include "cmsis_os.h"
+  #include "cmsis_os2.h"
 #endif
 
 /**

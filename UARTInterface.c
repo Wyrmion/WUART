@@ -3,8 +3,8 @@
  * @file     UARTInterface.C
  * @author   Wyrm
  * @brief    This file provides code for work with UARTInterface abstract class
- * @version  V1.0.0
- * @date     30. July — July— Jul. 2025
+ * @version  V1.0.1
+ * @date     03. Feb. 2026
  *************************************************************************
  */
  
@@ -161,7 +161,6 @@ bool UartInterface_SetNotificationsThreadID(UartInterface_t *cthis,void* ctx, vo
   
   return true;
 }
-#endif
 
 /**
  * @brief Return last irq tag
@@ -177,6 +176,9 @@ UartInterface_eIRQTag_t UartInterface_GetIRQEvent(UartInterface_t* cthis)
 
   return ret;
 }
+#endif
+
+
 
   
 
