@@ -3,8 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.1
- * @date   	03 Feb. 2026
+ * @version V1.2.2
+ * @date   	04 Feb. 2026
  * @todo    Move all platform depending code to @ref sUartInterface_Handle_t
  *************************************************************************
  */
@@ -97,7 +97,9 @@ static HwInterface_vtable_t vtable = {
  {
     if((cfg->src == NULL)||(cfg->dst == NULL)||(hwinter == NULL))
       return false;
-
+    
+    cthis->hwinter = hwinter;
+    
     #ifndef INC_FREERTOS_H    
       UartInterface_SetClbErr(cthis->hwinter,cthis,UErrorIrq);
       UartInterface_SetClbRx(cthis->hwinter,cthis,URxIrq);
@@ -108,7 +110,7 @@ static HwInterface_vtable_t vtable = {
       UNUSED(UErrorIrq);
     #endif
 
-    cthis->hwinter = hwinter;
+    
     #ifdef WINTERFACE_USE_INTERFACE_PARENT_LIB
     cthis->parent.vtable = &vtable;
     #endif
