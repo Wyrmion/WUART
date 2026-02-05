@@ -3,8 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.2
- * @date   	04 Feb. 2026
+ * @version V1.2.3
+ * @date   	05 Feb. 2026
  * @todo    Move all platform depending code to @ref sUartInterface_Handle_t
  *************************************************************************
  */
@@ -75,6 +75,7 @@
     static void Process(    void* cthis_ptr); 
     static bool IsFree(     void* cthis_ptr);
     static bool Connect(    void* cthis_ptr);
+    static bool Disconnect(    void* cthis_ptr);
     #ifdef W_USE_RTOS
       static void _this_os_thread(  void* cthis_ptr);
     #endif
@@ -89,7 +90,7 @@ static HwInterface_vtable_t vtable = {
     .IsFree = IsFree,
     .Process = Process,
     .Connect = Connect,
-
+    .Disconnect = Disconnect,
 }/*!< setup @ref HWInterface_t vtable*/;
 #endif
 
@@ -311,6 +312,21 @@ static bool Connect(void* cthis_ptr)
   return true;
 }
 
+/**
+ * @brief   Realization of @ref HWInterface_t Disconnect function
+ * @warning drop to while(1) if error for bug catch;
+ * @param   cthis_ptr  pointer to @ref RSxxx_t
+ * @return  true      if everything ok
+ */
+static bool Disconnect(    void* cthis_ptr)
+{
+  __auto_type cthis = (RSxxx_t*)cthis_ptr;
+  
+  if(!UartInterface_UnsubscribeIrq(cthis->hwinter))
+    while(1); //bugcatch
+
+  return true;
+}
 /**
  * @brief Realization of @ref HWInterface_t set external rx buffer pointer
  * 
