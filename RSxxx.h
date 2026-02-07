@@ -3,8 +3,8 @@
   * @file     MyStRSxxx.h
   * @author   Wyrm
   * @brief    Header file for  RSxxx abstract layer
-  * @version  V1.1.0
-  * @date     15 Feb. 2025
+  * @version  V1.1.1
+  * @date     08 Feb. 2026
   ******************************************************************************
   */ 
 
@@ -45,7 +45,21 @@ typedef enum
 
 typedef struct RSxxx RSxxx_t; /*!< RSxxx class declaration :public @ref HWInterface_t*/
 
-
+  #ifdef RS4XX_USE_HW_PIN
+  #include "RS4xxDEnRE.h"
+  #endif
+    typedef struct
+    {
+      UartInterface_t*  hwinter;      /*!< Pointer to platform @ref UART_HandleTypeDef  */
+      size_t            intbuffsize;  /*!< Internal buffer size                         */
+      RSxxx_eRSMode_t   Mode;         /*!< Mode  @ref RSxxx_eRSMode_t RS4xx mode        */
+      #ifdef RS4XX_USE_HW_PIN
+      RS4xxDEnRE_t*     DEnRE;        /*!< DEnRE transciver pin struct @ref RS4xxDEnRE_t */
+      #endif
+      #ifdef W_USE_RTOS
+        void*     Thread;             /*!< Pointer to thread ID for call notifi*/
+      #endif 
+    }RSxxx_sInitConfig_t;
 
 #ifdef WINTERFACE_STATIC_ALLOCATE
   #include "RSxxxPrivate.h"
@@ -67,28 +81,15 @@ typedef struct RSxxx RSxxx_t; /*!< RSxxx class declaration :public @ref HWInterf
     bool      RSxxx_init(RSxxx_t* cthis,UartInterface_t* hwinter,const RSxxx_sStaticCfg* cfg);
   #endif
 
+  
   #ifdef RS4XX_USE_HW_PIN
-  #include "RS4xxDEnRE.h"
-
-    typedef struct
-    {
-      UartInterface_t*  hwinter;      /*!< Pointer to platform @ref UART_HandleTypeDef  */
-      size_t            intbuffsize;  /*!< Internal buffer size                         */
-      RSxxx_eRSMode_t   Mode;         /*!< Mode  @ref RSxxx_eRSMode_t RS4xx mode        */
-      #ifdef RS4XX_USE_HW_PIN
-      RS4xxDEnRE_t*     DEnRE;        /*!< DEnRE transciver pin struct @ref RS4xxDEnRE_t */
-      #endif
-      #ifdef W_USE_RTOS
-        void*     Thread;             /*!< Pointer to thread ID for call notifi*/
-      #endif 
-    }RSxxx_sInitConfig_t;
   
     #ifndef WINTERFACE_STATIC_ALLOCATE
       RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg);
     #else
       bool      RSxxx_InitRS4xx(RSxxx_t* cthis,UartInterface_t* hwinter,const RSxxx_sStaticCfg* cfg, RSxxx_eRSMode_t Mode,RS4xxDEnRE_t* DenRe);
     #endif
-  #endif
+
   /** @}*/
 
   /**
@@ -97,6 +98,7 @@ typedef struct RSxxx RSxxx_t; /*!< RSxxx class declaration :public @ref HWInterf
    */
   void      MyStRSXXX_SetRS4xxMode(RSxxx_t* cthis, RSxxx_eRSMode_t Mode);
   /** @}*/
+  #endif
 /** @}*/
 
 /** @}*/
