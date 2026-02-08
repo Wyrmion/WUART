@@ -3,7 +3,7 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.3
+ * @version V1.2.4
  * @date   	05 Feb. 2026
  * @todo    Move all platform depending code to @ref sUartInterface_Handle_t
  *************************************************************************
@@ -455,16 +455,10 @@ static bool SendData(void* cthis_ptr,uint8_t* data,size_t len)
 static bool IsFree(void* cthis_ptr)
 {
   __auto_type cthis = (RSxxx_t*)cthis_ptr;
-  if(cthis->Mode!=RSxxx_eRSMode_RS485)
-  {
-    if(!UartInterface_IsFreeTx(cthis->hwinter))
-      return false;
-  }
-  else
-  {
-    if(!UartInterface_IsFreeRxTx(cthis->hwinter))
-      return false;
-  }
+  
+  if(!UartInterface_IsFreeTx(cthis->hwinter))
+    return false;
+  
   return true;
 }
 
