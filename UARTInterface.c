@@ -141,6 +141,7 @@ bool UartInterface_SetClbErr(UartInterface_t* cthis,void* ctx,void(*ErrClb)(void
   return true;
 }
 
+#ifdef W_USE_RTOS
 
 /**
 * @brief Set callback for tim ellapsed
@@ -177,7 +178,7 @@ UartInterface_eIRQTag_t UartInterface_GetIRQEvent(UartInterface_t* cthis)
 
   return ret;
 }
-
+#endif
   
 
 /** @}*/ /*End of TimerInterface group*/

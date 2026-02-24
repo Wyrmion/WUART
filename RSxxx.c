@@ -3,7 +3,7 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.5
+ * @version V1.2.6
  * @date    26 Feb. 2026
  *************************************************************************
  */
@@ -108,7 +108,7 @@ bool RSxxx_init(RSxxx_t* cthis,RSxxx_sInitConfig_t* iCfg,const RSxxx_sStaticCfg*
   
 
   cthis->hwinter = iCfg->hwinter;
-  cthis->ThreadID = iCfg->Thread;
+  
 
   cthis->parent.vtable = &vtable;
     
@@ -132,6 +132,7 @@ bool RSxxx_init(RSxxx_t* cthis,RSxxx_sInitConfig_t* iCfg,const RSxxx_sStaticCfg*
   UartInterface_SetClbTx(cthis->hwinter,cthis,UTxIrq);
     
   #ifdef W_USE_RTOS
+    cthis->ThreadID = iCfg->Thread;  
     UartInterface_SetNotificationsThreadID(cthis->hwinter,cthis, cthis->ThreadID);
   #endif
     
