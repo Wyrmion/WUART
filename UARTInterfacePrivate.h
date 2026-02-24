@@ -3,8 +3,8 @@
   * @file     UARTInterfacePrivate.h
   * @author   Wyrm
   * @brief    Header file for UART Interface abstract class
-  * @version  V1.0.0
-  * @date     12 Nov. 2024
+  * @version  V1.0.1
+  * @date     24 Feb. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -51,11 +51,12 @@ struct UartInterface
   
   uint32_t RxCnt;  
 
-  #ifndef W_USE_RTOS
-    void(*RxClb)(void* ctx,size_t len);   /*!< Rx complete callback*/
-    void(*TxClb)(void* ctx);              /*!< Tx complete callback */
-    void(*ErrClb)(void* ctx);             /*!< Get Error callback*/
-  #else
+  
+  void(*RxClb)(void* ctx,uint32_t len);   /*!< Rx complete callback*/
+  void(*TxClb)(void* ctx);              /*!< Tx complete callback */
+  void(*ErrClb)(void* ctx);             /*!< Get Error callback*/
+    
+  #ifdef W_USE_RTOS
     struct
     {
       void*                                 ThreadId; /*!< pointer to rtos semaphore*/

@@ -3,8 +3,8 @@
   * @file     UartInterface.h
   * @author   Wyrm
   * @brief    Header file for UartInterface
-  * @version  V1.0.1
-  * @date     25. Oct. 2025
+  * @version  V1.0.2
+  * @date     24. Feb. 2026
   ******************************************************************************
   */ 
 
@@ -102,16 +102,19 @@ typedef struct UartInterface UartInterface_t;
 
   bool UartInterface_Reset(const UartInterface_t* cthis);
 
-  #ifndef W_USE_RTOS
-    bool UartInterface_SetClbRx(  UartInterface_t* cthis,void* ctx,void(*RxClb)(void* ctx,size_t len)) ;  /*!< Rx complete callback*/;
-    bool UartInterface_SetClbTx(  UartInterface_t* cthis,void* ctx,void(*TxClb)(void* ctx));              /*!< Tx complete callback */
-    bool UartInterface_SetClbErr( UartInterface_t* cthis,void* ctx,void(*ErrClb)(void* ctx));            /*!< Get Error callback*/
-  #else
-    UartInterface_eIRQTag_t UartInterface_GetIRQEvent(UartInterface_t* cthis);
+ 
+  bool UartInterface_SetClbRx(  UartInterface_t* cthis,void* ctx,void(*RxClb)(void* ctx,uint32_t len)) ;  /*!< Rx complete callback*/;
+  bool UartInterface_SetClbTx(  UartInterface_t* cthis,void* ctx,void(*TxClb)(void* ctx));              /*!< Tx complete callback */
+  bool UartInterface_SetClbErr( UartInterface_t* cthis,void* ctx,void(*ErrClb)(void* ctx));            /*!< Get Error callback*/
 
-    bool UartInterface_SetNotificationsThreadID(UartInterface_t *cthis,void* ctx, void *ThreadID);
-    uint32_t UartInterface_GetRxCnt(const UartInterface_t *cthis);
+  
+  UartInterface_eIRQTag_t UartInterface_GetIRQEvent(UartInterface_t* cthis);
+
+  #ifdef W_USE_RTOS
+    bool      UartInterface_SetNotificationsThreadID(UartInterface_t *cthis,void* ctx, void *ThreadID);
+    uint32_t  UartInterface_GetRxCnt(const UartInterface_t *cthis);
   #endif
+
 /** @}*/
 
 /** @} */ /*End of Uart interface group*/

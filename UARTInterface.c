@@ -2,9 +2,9 @@
  ****************************************************************************
  * @file     UARTInterface.C
  * @author   Wyrm
- * @brief    This file provides code for work with UARTInterface abstract class
+ * @brief    This file p1ovides code for work with UARTInterface abstract class
  * @version  V1.0.1
- * @date     03. Feb. 2026
+ * @date     24 Feb. 2026
  *************************************************************************
  */
  
@@ -81,7 +81,7 @@ void UartInterface_dtor(UartInterface_t* cthis)
   heap_free(cthis);
 }
 
-#ifndef W_USE_RTOS
+
 /**
  * @brief Set callback for Rx callback
  * 
@@ -91,7 +91,7 @@ void UartInterface_dtor(UartInterface_t* cthis)
  * @return true  is setup succesful
  * @return false 
  */
-bool UartInterface_SetClbRx(UartInterface_t* cthis,void* ctx,void(*RxClb)(void* ctx,size_t len))
+bool UartInterface_SetClbRx(UartInterface_t* cthis,void* ctx,void(*RxClb)(void* ctx,uint32_t len))
 {
   if((cthis == NULL)||(RxClb == NULL))
     return false;
@@ -140,7 +140,7 @@ bool UartInterface_SetClbErr(UartInterface_t* cthis,void* ctx,void(*ErrClb)(void
 
   return true;
 }
-#else
+
 
 /**
 * @brief Set callback for tim ellapsed
@@ -162,6 +162,7 @@ bool UartInterface_SetNotificationsThreadID(UartInterface_t *cthis,void* ctx, vo
   return true;
 }
 
+
 /**
  * @brief Return last irq tag
  * 
@@ -176,9 +177,6 @@ UartInterface_eIRQTag_t UartInterface_GetIRQEvent(UartInterface_t* cthis)
 
   return ret;
 }
-#endif
-
-
 
   
 

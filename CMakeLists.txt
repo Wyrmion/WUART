@@ -13,7 +13,6 @@ add_library(${LIB_NAME} STATIC UARTInterface.c STHallUartInterface.c RSxxx.c)
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(${USE_WRS4XX_PIN})
-
     target_compile_definitions(${LIB_NAME} PUBLIC RS4XX_USE_HW_PIN W_USE_RTOS)
     
     add_subdirectory(RS4xxDEnRE rs4xxdenre)

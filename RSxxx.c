@@ -3,9 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.4
- * @date   	05 Feb. 2026
- * @todo    Move all platform depending code to @ref sUartInterface_Handle_t
+ * @version V1.2.5
+ * @date    26 Feb. 2026
  *************************************************************************
  */
  
@@ -76,9 +75,6 @@
     static bool IsFree(     void* cthis_ptr);
     static bool Connect(    void* cthis_ptr);
     static bool Disconnect(    void* cthis_ptr);
-    #ifdef W_USE_RTOS
-      static void _this_os_thread(  void* cthis_ptr);
-    #endif
   /** @}*/
 /** @}*/
 #ifdef WINTERFACE_USE_INTERFACE_PARENT_LIB
@@ -94,49 +90,54 @@ static HwInterface_vtable_t vtable = {
 }/*!< setup @ref HWInterface_t vtable*/;
 #endif
 
- bool RSxxx_init(RSxxx_t* cthis,UartInterface_t* hwinter,const RSxxx_sStaticCfg* cfg)
- {
-    if((cfg->src == NULL)||(cfg->dst == NULL)||(hwinter == NULL))
-      return false;
+/**
+ * @brief Initialization 
+ * 
+ * @param cthis 
+ * @param init 
+ * @return true 
+ * @return false 
+ */
+bool RSxxx_init(RSxxx_t* cthis,RSxxx_sInitConfig_t* iCfg,const RSxxx_sStaticCfg* sCfg)
+{
+  if((sCfg->src == NULL)||(sCfg->dst == NULL)||(iCfg->hwinter == NULL))
+    return false;
+
+     
+
+  
+
+  cthis->hwinter = iCfg->hwinter;
+  cthis->ThreadID = iCfg->Thread;
+
+  cthis->parent.vtable = &vtable;
     
-    cthis->hwinter = hwinter;
+  cthis->InternalSize = sCfg->src_dst_size;
+
+  cthis->RxBuffInternal = sCfg->dst;
+  cthis->TxBuffInternal = sCfg->src;
+
+  cthis->drdy   = false;
+
+  cthis->RxBuff = NULL;
+  cthis->RxBuff_Maxlen = 0;
+
+  cthis->TxBuff = NULL;
+  cthis->TxBuff_Maxlen = 0;
+
+  cthis->Mode = RSxxx_eRSMode_RS232;  
+ 
+  UartInterface_SetClbErr(cthis->hwinter,cthis,UErrorIrq);    
+  UartInterface_SetClbRx(cthis->hwinter,cthis,URxIrq);
+  UartInterface_SetClbTx(cthis->hwinter,cthis,UTxIrq);
     
-    #ifndef INC_FREERTOS_H    
-      UartInterface_SetClbErr(cthis->hwinter,cthis,UErrorIrq);
-      UartInterface_SetClbRx(cthis->hwinter,cthis,URxIrq);
-      UartInterface_SetClbTx(cthis->hwinter,cthis,UTxIrq);
-    #else 
-      UNUSED(URxIrq);
-      UNUSED(UTxIrq);
-      UNUSED(UErrorIrq);
-    #endif
-
-    
-    #ifdef WINTERFACE_USE_INTERFACE_PARENT_LIB
-    cthis->parent.vtable = &vtable;
-    #endif
-    cthis->InternalSize = cfg->src_dst_size;
-
-    cthis->RxBuffInternal = cfg->dst;
-    cthis->TxBuffInternal = cfg->src;
-
-    cthis->drdy   = false;
-
-    cthis->RxBuff = NULL;
-    cthis->RxBuff_Maxlen = 0;
-
-    cthis->TxBuff = NULL;
-    cthis->TxBuff_Maxlen = 0;
-
-    cthis->Mode = RSxxx_eRSMode_RS232;  
-
-    #ifdef W_USE_RTOS
-      UartInterface_SetNotificationsThreadID(cthis->hwinter,cthis, cthis->ThreadID);
-    #endif
+  #ifdef W_USE_RTOS
+    UartInterface_SetNotificationsThreadID(cthis->hwinter,cthis, cthis->ThreadID);
+  #endif
     
 
     
-    return true;
+  return true;
  }
 
 
@@ -144,28 +145,27 @@ static HwInterface_vtable_t vtable = {
  #ifndef WINTERFACE_STATIC_ALLOCATE
 /**
  * @brief RSxxx default class constructor
- * @param hwuart pointer to platform @ref UART_HandleTypeDef
- * @param intbuffsize internal buffer size
+ * @param cnfg pointer to config struct @ref RSxxx_sInitConfig_t
  * @return RSxxx_t*
  */
-RSxxx_t* RSxxx_ctor(UartInterface_t* hwinter,size_t intbuffsize)
+RSxxx_t* RSxxx_ctor(RSxxx_sInitConfig_t* cnfg)
 {  
-  if(hwinter == NULL) 
+  if(cnfg->hwinter == NULL) 
     return NULL;
   RSxxx_t *cthis;
 
   if((cthis = heap_malloc_cast(RSxxx_t)) == NULL)
     while(1);
-  if((cthis->InternalSize = intbuffsize) == 0)
+  if((cthis->InternalSize = cnfg->intbuffsize) == 0)
     while(1);
 
   const RSxxx_sStaticCfg cfg = 
   {
     .src = heap_malloc(cthis->InternalSize),
     .dst = heap_malloc(cthis->InternalSize),
-    .src_dst_size = intbuffsize};
+    .src_dst_size = cnfg->intbuffsize};
   
-  RSxxx_init(cthis,hwinter,&cfg);
+  RSxxx_init(cthis,cnfg,&cfg);
 
   //StartUartRx(cthis); 
   return cthis;
@@ -181,14 +181,15 @@ void RSxxx_dtor(RSxxx_t *cthis)
 }
 
 #ifdef RS4XX_USE_HW_PIN
-bool RSxxx_InitRS4xx(RSxxx_t* cthis,UartInterface_t* hwinter,const RSxxx_sStaticCfg* cfg, RSxxx_eRSMode_t Mode,RS4xxDEnRE_t* DEnRE)
+bool RSxxx_InitRS4xx(RSxxx_t* cthis,RSxxx_sInitConfig_t* iCfg,const RSxxx_sStaticCfg* sCfg)
 {
 
-  cthis->Mode = Mode;
-  cthis->DEnRE = *DEnRE;  
+  cthis->Mode = iCfg->Mode;
+  cthis->DEnRE = *iCfg->DEnRE;
+
   RS4xxDEnRE_SetRxTPins(&cthis->DEnRE);
 
-  return RSxxx_init(cthis,cthis->hwinter,cfg);
+  return RSxxx_init(cthis,iCfg,sCfg);
   
 }
 /**
@@ -202,7 +203,7 @@ RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg) //: RSxxx_ctor(hwuart)
     if((cnfg->Mode != RSxxx_eRSMode_RS422)&&(cnfg->Mode != RSxxx_eRSMode_RS485)) return NULL;
     if(cnfg->DEnRE == NULL) return NULL;
     
-    __auto_type cthis =  RSxxx_ctor(cnfg->hwinter,cnfg->intbuffsize);
+    __auto_type cthis =  RSxxx_ctor(cnfg);
     
     if(cthis == NULL) 
       return cthis;
@@ -217,25 +218,6 @@ RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg) //: RSxxx_ctor(hwuart)
 }
 #endif /* RS4XX_USE_HW_PIN */
 #endif /* WINTERFACE_STATIC_ALLOCATE */
-
-
-#ifdef W_USE_RTOS
-static void _this_os_thread(void* cthis_ptr)
-{
-  __auto_type cthis = (RSxxx_t*)cthis_ptr;
-
-  switch(UartInterface_GetIRQEvent(cthis->hwinter))
-  {
-    case UartInterface_eIRQTag_NoEvent: break;
-    case UartInterface_eIRQTag_ClbRx:   URxIrq(cthis_ptr,UartInterface_GetRxCnt(cthis->hwinter));
-                                        break;
-    case UartInterface_eIRQTag_ClbTx:   UTxIrq(cthis_ptr);
-                                        break;
-    case UartInterface_eIRQTag_ClbErr:  UErrorIrq(cthis_ptr);
-                                        break;
-  }
-}
-#endif
 
 
 /**
@@ -289,6 +271,8 @@ static void UErrorIrq(void* cthis_ptr)
 {  
   //__auto_type* cthis = (RSxxx_t*)cthis_ptr;
   W_UNUSED(cthis_ptr); 
+  __auto_type cthis = (RSxxx_t*)cthis_ptr;
+  _this_start_rx(cthis);
   
 }
 
@@ -469,11 +453,7 @@ static bool IsFree(void* cthis_ptr)
  */
 static void Process(void* cthis_ptr)
 { 
-  #ifndef W_USE_RTOS
-    UNUSED(cthis_ptr);
-  #else
-    _this_os_thread(cthis_ptr);
-  #endif
+  UNUSED(cthis_ptr);
 }
 
 

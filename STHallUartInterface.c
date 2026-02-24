@@ -319,15 +319,17 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 
   huartInter[indx]->RxCnt = Size;
 
+
+   if(huartInter[indx]->RxClb != NULL) 
+    huartInter[indx]->RxClb(huartInter[indx]->ctx,huartInter[indx]->RxCnt);
+
   #ifdef W_USE_RTOS
   huartInter[indx]->Os.tag = UartInterface_eIRQTag_ClbRx;
 
   if(huartInter[indx]->Os.ThreadId != NULL)
     osThreadFlagsSet(huartInter[indx]->Os.ThreadId,huartInter[indx]->Os.tag);
-  #else 
-   if(huartInter[indx]->RxClb != NULL) 
-    huartInter[indx]->RxClb(huartInter[indx]->ctx,huartInter[indx]->RxCnt);
   #endif
+
 }
 
 enum {kCOUNTER_UART_4_BASE = __COUNTER__};
@@ -351,15 +353,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   if(indx < 0)  
     return;
   huartInter[indx]->RxCnt = huart->RxXferCount;
+
+  if(huartInter[indx]->RxClb != NULL) 
+      huartInter[indx]->RxClb(huartInter[indx]->ctx,huartInter[indx]->RxCnt);
+
   #ifdef W_USE_RTOS
   huartInter[indx]->Os.tag = UartInterface_eIRQTag_ClbRx;
 
   if(huartInter[indx]->Os.ThreadId != NULL)
     osThreadFlagsSet(huartInter[indx]->Os.ThreadId,huartInter[indx]->Os.tag);
-  #else
-    if(huartInter[indx]->RxClb != NULL) 
-      huartInter[indx]->RxClb(huartInter[indx]->ctx,huartInter[indx]->RxCnt);
   #endif
+  
 }
 
 
@@ -385,14 +389,15 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart)
     return;
   
   
+
+  if(huartInter[indx]->TxClb != NULL) 
+    huartInter[indx]->TxClb(huartInter[indx]->ctx);
+  
   #ifdef W_USE_RTOS
   huartInter[indx]->Os.tag = UartInterface_eIRQTag_ClbTx;
-
+  
   if(huartInter[indx]->Os.ThreadId != NULL)
     osThreadFlagsSet(huartInter[indx]->Os.ThreadId,huartInter[indx]->Os.tag);
-  #else
-    if(huartInter[indx]->TxClb != NULL) 
-      huartInter[indx]->TxClb(huartInter[indx]->ctx);
   #endif
 
 }
@@ -417,15 +422,17 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef* huart)
   if(indx < 0)  
     return;
 
+
+  if(huartInter[indx]->ErrClb != NULL) 
+    huartInter[indx]->ErrClb(huartInter[indx]->ctx);
+  
   #ifdef W_USE_RTOS
   huartInter[indx]->Os.tag = UartInterface_eIRQTag_ClbErr;
 
   if(huartInter[indx]->Os.ThreadId != NULL)
     osThreadFlagsSet(huartInter[indx]->Os.ThreadId,huartInter[indx]->Os.tag);
-  #else
-    if(huartInter[indx]->ErrClb != NULL) 
-      huartInter[indx]->ErrClb(huartInter[indx]->ctx);
-  #endif
+  #endif  
+  
 }
 
 

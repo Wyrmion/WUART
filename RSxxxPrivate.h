@@ -4,7 +4,7 @@
   * @author   Wyrm
   * @brief    Header file for RSxxx Interface abstract class
   * @version  V1.0.1
-  * @date     03 Feb. 2026
+  * @date     24 Feb. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -13,7 +13,7 @@
 
 
 
-
+#include "cmsis_os2.h"
 #ifdef __cplusplus
 extern "C"{
 #endif
