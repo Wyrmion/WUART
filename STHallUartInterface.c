@@ -4,7 +4,7 @@
  * @author   Wyrm
  * @brief    This file provides code for work interface uart class 
  * @version  V1.0.0
- * @date     02. Nov. 2024						
+ * @date     02. Nov. 2024
  *************************************************************************
  */
 

@@ -2,10 +2,9 @@
  ****************************************************************************
  * @file    STHallUartInterface.h
  * @author  Wyrm
- * @brief   This is a project-specific configuration file (should be skip-worktree in git). 
- *          Comment out the necessary lines to properly configure the project 
- * @version V1.0.1
- * @date    09. Jan. 2025							
+ * @brief   STHallUartInterface header file
+ * @version V1.0.2
+ * @date    27. Oct. 2026						
  *************************************************************************
  */
 #ifndef __ST_HALL_UART_INTERFACE_H__
@@ -17,6 +16,7 @@ extern "C"{
 
 #include <stdlib.h>
 #include "main.h"
+#include "ISTHallUartCfg.h"
 
 /**ыфва 
  * @addtogroup UartInterface 
@@ -29,16 +29,7 @@ extern "C"{
  * @{
  */
 /* Private macro -------------------------------------------------------------*/
-#define ST_UART1
-//#define ST_UART2
-//#define ST_UART3
-//#define ST_UART4
-//#define ST_UART5
-//#define ST_UART6
-//#define ST_UART7
-//#define ST_UART8
-//#define ST_UART9
-//#define ST_UART10
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
 
