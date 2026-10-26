@@ -3,8 +3,8 @@
   * @file     MyStRSxxx.h
   * @author   Wyrm
   * @brief    Header file for RSxxx abstract layer
-  * @version  V1.1.1
-  * @date     26 Feb. 2026
+  * @version  V1.1.2
+  * @date     26 Oct. 2026
   ******************************************************************************
   */ 
 
@@ -44,7 +44,7 @@ typedef enum
 }RSxxx_eRSMode_t;
 
 typedef struct RSxxx RSxxx_t; /*!< RSxxx class declaration :public @ref HWInterface_t*/
-#ifdef RS4XX_USE_HW_PIN
+#ifdef W_RSXXX_USE_HW_PIN
  #include "RS4xxDEnRE.h"
 #endif 
 
@@ -57,7 +57,7 @@ typedef struct
   UartInterface_t*  hwinter;      /*!< Pointer to platform @ref UART_HandleTypeDef  */
   size_t            intbuffsize;  /*!< Internal buffer size                         */
   RSxxx_eRSMode_t   Mode;         /*!< Mode  @ref RSxxx_eRSMode_t RS4xx mode        */
-  #ifdef RS4XX_USE_HW_PIN
+  #ifdef W_RSXXX_USE_HW_PIN
   RS4xxDEnRE_t*     DEnRE;        /*!< DEnRE transciver pin struct @ref RS4xxDEnRE_t */
   #endif
   #ifdef W_USE_RTOS

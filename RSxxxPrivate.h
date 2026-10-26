@@ -3,8 +3,8 @@
   * @file     RSxxxInterfacePrivate.h
   * @author   Wyrm
   * @brief    Header file for RSxxx Interface abstract class
-  * @version  V1.0.1
-  * @date     24 Feb. 2026
+  * @version  V1.0.2
+  * @date     26 Oct. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -25,6 +25,8 @@ extern "C"{
 #ifdef W_USE_RTOS
   #include "cmsis_os2.h"
 #endif
+
+//#include "RSxxx.h"
 
 /**
  * @addtogroup Wyrm_Drivers Wyrm Drivers
@@ -57,7 +59,7 @@ struct RSxxx //public: HWInterface_t
   #endif
     RSxxx_eRSMode_t    Mode;         /*!< RS mode @ref eMyStRSxxxMode_t*/
 
-  #ifdef RS4XX_USE_HW_PIN
+  #ifdef W_RSXXX_USE_HW_PIN
    RS4xxDEnRE_t DEnRE; 
   #endif 
 

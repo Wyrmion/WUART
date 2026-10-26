@@ -3,8 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.6
- * @date    26 Feb. 2026
+ * @version V1.2.7
+ * @date    26 Oct. 2026
  *************************************************************************
  */
  
@@ -70,7 +70,7 @@
     static bool ReadRxBuff( void* cthis_ptr,uint8_t* data,   size_t* len,size_t  max_len);
     static void SetRxBuff(  void* cthis_ptr,uint8_t* RxBuff, size_t  max_len);
     static void SetTxBuff(  void* cthis_ptr,uint8_t* RxBuff, size_t  max_len);
-    static bool SendData(   void* cthis_ptr,uint8_t* data,   size_t len);
+    static bool SendData(   void* cthis_ptr,const uint8_t* data,   size_t len);
     static void Process(    void* cthis_ptr); 
     static bool IsFree(     void* cthis_ptr);
     static bool Connect(    void* cthis_ptr);
@@ -181,12 +181,14 @@ void RSxxx_dtor(RSxxx_t *cthis)
   heap_free(cthis);
 }
 
-#ifdef RS4XX_USE_HW_PIN
+#ifdef W_RSXXX_USE_HW_PIN
 bool RSxxx_InitRS4xx(RSxxx_t* cthis,RSxxx_sInitConfig_t* iCfg,const RSxxx_sStaticCfg* sCfg)
 {
 
   cthis->Mode = iCfg->Mode;
   cthis->DEnRE = *iCfg->DEnRE;
+
+  
 
   RS4xxDEnRE_SetRxTPins(&cthis->DEnRE);
 
@@ -217,7 +219,7 @@ RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg) //: RSxxx_ctor(hwuart)
     
     return cthis;
 }
-#endif /* RS4XX_USE_HW_PIN */
+#endif /* W_RSXXX_USE_HW_PIN */
 #endif /* WINTERFACE_STATIC_ALLOCATE */
 
 
@@ -248,7 +250,7 @@ static void UTxIrq(void* cthis_ptr)
 {
   
   
-  #ifdef RS4XX_USE_HW_PIN
+  #ifdef W_RSXXX_USE_HW_PIN
   __auto_type cthis = (RSxxx_t*)cthis_ptr;
 
   if(cthis->Mode == RSxxx_eRSMode_RS422)
@@ -382,7 +384,7 @@ static bool ReadRxBuff(void* cthis_ptr,uint8_t* data,size_t* len,size_t max_len)
  * @return true     if packet move to send buffer
  * @return false    if buse or error
  */
-static bool SendData(void* cthis_ptr,uint8_t* data,size_t len)
+static bool SendData(void* cthis_ptr,const uint8_t* data,size_t len)
 {
   __auto_type cthis = (RSxxx_t*)cthis_ptr;
 
@@ -390,7 +392,7 @@ static bool SendData(void* cthis_ptr,uint8_t* data,size_t len)
   {
     if(IsFree(cthis))
     {
-      #ifdef RS4XX_USE_HW_PIN
+      #ifdef W_RSXXX_USE_HW_PIN
       if(cthis->Mode == RSxxx_eRSMode_RS422)
         RS4xxDEnRE_SetTxSPin(&cthis->DEnRE,true);
       if(cthis->Mode == RSxxx_eRSMode_RS485)
@@ -399,7 +401,7 @@ static bool SendData(void* cthis_ptr,uint8_t* data,size_t len)
     }
     else
     {
-      #ifdef RS4XX_USE_HW_PIN
+      #ifdef W_RSXXX_USE_HW_PIN
       if(cthis->Mode == RSxxx_eRSMode_RS485)
       {
         if(!UartInterface_Reset(cthis->hwinter))
@@ -419,7 +421,7 @@ static bool SendData(void* cthis_ptr,uint8_t* data,size_t len)
 
   if(!UartInterface_StartTx(cthis->hwinter,cthis->TxBuffInternal,len))
   { 
-    #ifdef RS4XX_USE_HW_PIN
+    #ifdef W_RSXXX_USE_HW_PIN
     if(cthis->Mode == RSxxx_eRSMode_RS422)
         RS4xxDEnRE_SetTxSPin(&cthis->DEnRE,false);
     #endif
@@ -454,7 +456,7 @@ static bool IsFree(void* cthis_ptr)
  */
 static void Process(void* cthis_ptr)
 { 
-  UNUSED(cthis_ptr);
+  [[maybe_unused]]__auto_type cthis = (RSxxx_t*)cthis_ptr;
 }
 
 
@@ -470,7 +472,7 @@ static void ResetDrdy(RSxxx_t* cthis)
   UartInterface_CRITICAL_exit(cthis->hwinter);
 }
 
-#ifdef RS4XX_USE_HW_PIN
+#ifdef W_RSXXX_USE_HW_PIN
 /**
  * @brief Set RS4xx mode (full/half duplex)
  * @note  This func can't how swap from RS4xx to RS232.

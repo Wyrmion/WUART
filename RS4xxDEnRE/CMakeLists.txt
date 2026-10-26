@@ -9,3 +9,4 @@ enable_language(C ASM)
 add_library(${LIB_NAME} STATIC RS4xxDEnRE.c)
 
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(${LIB_NAME} PUBLIC stm32cubemx hwpin) #maincpp for HALL driver

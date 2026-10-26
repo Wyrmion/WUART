@@ -3,8 +3,8 @@
   * @file     UartInterface.h
   * @author   Wyrm
   * @brief    Header file for UartInterface
-  * @version  V1.0.2
-  * @date     24. Feb. 2026
+  * @version  V1.0.3
+  * @date     26. Oct. 2026
   ******************************************************************************
   */ 
 
@@ -20,7 +20,6 @@ extern "C"{
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include "main.h"
 
 
 /* Public macro -------------------------------------------------------------*/
