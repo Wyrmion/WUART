@@ -16,7 +16,7 @@ extern "C"{
 
 #include <stdlib.h>
 #include "main.h"
-#include "ISTHallUartCfg.h"
+#include "STHallUartInterfaceCfg.h"
 
 /**ыфва 
  * @addtogroup UartInterface 
