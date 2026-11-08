@@ -3,8 +3,8 @@
  * @file     STHallTUartInterface.C
  * @author   Wyrm
  * @brief    This file provides code for work interface uart class 
- * @version  V1.0.0
- * @date     02. Nov. 2024
+ * @version  V1.0.2
+ * @date     08 Nov. 2026
  *************************************************************************
  */
 

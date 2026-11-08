@@ -3,8 +3,8 @@
  * @file    STHallUartInterface.h
  * @author  Wyrm
  * @brief   STHallUartInterface header file
- * @version V1.0.2
- * @date    27. Oct. 2026						
+ * @version  V1.0.2
+ * @date     08 Nov. 2026
  *************************************************************************
  */
 #ifndef __ST_HALL_UART_INTERFACE_H__

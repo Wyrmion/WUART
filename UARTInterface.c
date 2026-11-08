@@ -3,8 +3,8 @@
  * @file     UARTInterface.C
  * @author   Wyrm
  * @brief    This file p1ovides code for work with UARTInterface abstract class
- * @version  V1.0.1
- * @date     24 Feb. 2026
+ * @version  V1.0.2
+ * @date     08 Nov. 2026
  *************************************************************************
  */
  

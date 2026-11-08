@@ -3,8 +3,8 @@
   * @file     UartInterface.h
   * @author   Wyrm
   * @brief    Header file for UartInterface
-  * @version  V1.0.3
-  * @date     26. Oct. 2026
+  * @version  V1.0.2
+  * @date     08 Nov. 2026
   ******************************************************************************
   */ 
 

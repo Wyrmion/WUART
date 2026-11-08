@@ -3,8 +3,8 @@
   * @file     UARTInterfacePrivate.h
   * @author   Wyrm
   * @brief    Header file for UART Interface abstract class
-  * @version  V1.0.1
-  * @date     24 Feb. 2026
+  * @version  V1.0.2
+  * @date     08 Nov. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/

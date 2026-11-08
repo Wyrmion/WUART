@@ -3,8 +3,8 @@
  * @file    MyStRSxxx.c
  * @author  Wyrm
  * @brief   cthis file provide code for RSxxx abstract layer
- * @version V1.2.7
- * @date    26 Oct. 2026
+ * @version V1.2.9
+ * @date    08 Nov. 2026
  *************************************************************************
  */
  
@@ -78,7 +78,7 @@
   /** @}*/
 /** @}*/
 #ifdef WINTERFACE_USE_INTERFACE_PARENT_LIB
-static HwInterface_vtable_t vtable = {
+static const HwInterface_vtable_t vtable = {
     .ReadRxBuff = ReadRxBuff,
     .SetRxBuff = SetRxBuff,
     .SetTxBuff = SetTxBuff,
@@ -210,7 +210,7 @@ RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg) //: RSxxx_ctor(hwuart)
     
     if(cthis == NULL) 
       return cthis;
-
+    
     cthis->Mode = cnfg->Mode;
 
     cthis->DEnRE = *cnfg->DEnRE;
@@ -387,7 +387,7 @@ static bool ReadRxBuff(void* cthis_ptr,uint8_t* data,size_t* len,size_t max_len)
 static bool SendData(void* cthis_ptr,const uint8_t* data,size_t len)
 {
   __auto_type cthis = (RSxxx_t*)cthis_ptr;
-
+  
   if(cthis->Mode != RSxxx_eRSMode_RS232)
   {
     if(IsFree(cthis))

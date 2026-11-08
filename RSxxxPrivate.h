@@ -1,15 +1,15 @@
 /**
   ******************************************************************************
-  * @file     RSxxxInterfacePrivate.h
+  * @file     RSxxxPrivate.h
   * @author   Wyrm
-  * @brief    Header file for RSxxx Interface abstract class
-  * @version  V1.0.2
-  * @date     26 Oct. 2026
+  * @brief    Header file for RSxxx private class 
+  * @version  V1.2.9
+  * @date     08 Nov. 2026
   ******************************************************************************
   */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __TIMER_INTERFACE_PRIVATE_H__
-#define __TIMER_INTERFACE_PRIVATE_H__
+#ifndef __RS_XXX_PRIVATE_H__
+#define __RS_XXX_PRIVATE_H__
 
 
 
@@ -58,7 +58,7 @@ struct RSxxx //public: HWInterface_t
     HWInterface_t       parent;       /*!< Parent  @ref HWInterface_t */
   #endif
     RSxxx_eRSMode_t    Mode;         /*!< RS mode @ref eMyStRSxxxMode_t*/
-
+  
   #ifdef W_RSXXX_USE_HW_PIN
    RS4xxDEnRE_t DEnRE; 
   #endif 

@@ -3,8 +3,8 @@
   * @file     ISTHallUartCfg.h
   * @author   Wyrm
   * @brief    Header file for ISTHallUartCfg
-  * @version  V1.0.0
-  * @date     26 Oct. 2026
+  * @version  V1.0.2
+  * @date     08 Nov. 2026
   ******************************************************************************
   */ 
 
@@ -37,9 +37,9 @@ extern "C"{
  * @{
  */
 
-//#define ST_UART1
+#define ST_UART1
 //#define ST_UART2
-//#define ST_UART3
+#define ST_UART3
 //#define ST_UART4
 //#define ST_UART5
 //#define ST_UART6

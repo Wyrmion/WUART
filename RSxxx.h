@@ -3,8 +3,8 @@
   * @file     MyStRSxxx.h
   * @author   Wyrm
   * @brief    Header file for RSxxx abstract layer
-  * @version  V1.1.2
-  * @date     26 Oct. 2026
+  * @version  V1.2.9
+  * @date     08 Nov. 2026
   ******************************************************************************
   */ 
 
@@ -79,11 +79,8 @@ typedef struct
   #else    
     bool      RSxxx_init(RSxxx_t* cthis,UartInterface_t* hwinter,const RSxxx_sStaticCfg* cfg);
   #endif
-
-  #ifdef RS4XX_USE_HW_PIN
- 
-
   
+  #ifdef W_RSXXX_USE_HW_PIN
     #ifndef WINTERFACE_STATIC_ALLOCATE
       RSxxx_t*  RSxxx_ctorRS4xx(RSxxx_sInitConfig_t* cnfg);
     #else
